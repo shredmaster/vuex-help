@@ -1,14 +1,11 @@
-
-
 const vuexHelpMixin = function (modules) {
   return {
     beforeCreate () {
       const options = this.$options
       if (!options.computed) options.computed = {}
       if (options.computed.$h) return
-      const adapter = Adapter(this)
       options.computed.$h = function () {
-        return recursiveDecorator(modules, adapter)
+        return { crap: 'ok' }
       }
     }
   }

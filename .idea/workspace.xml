@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4b44f2a3-b5f8-4265-a0a3-f99843de3c13" name="Default Changelist" comment="" />
+    <list default="true" id="4b44f2a3-b5f8-4265-a0a3-f99843de3c13" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/vuex-help.common.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/vuex-help.common.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mixin.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/mixin.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/vuex-help" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1ZPs6xPhdLdzvs4plOa5cvmv3GS" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -19,6 +26,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="javascript.karma.karma_node_package_dir" value="##Select package" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src" />
@@ -172,7 +180,7 @@
       <option name="presentableId" value="Default" />
       <updated>1584751891662</updated>
       <workItem from="1584751895325" duration="10833000" />
-      <workItem from="1584768605452" duration="2582000" />
+      <workItem from="1584768605452" duration="3235000" />
     </task>
     <servers />
   </component>
@@ -233,9 +241,9 @@
       <screen x="0" y="23" width="1680" height="1027" />
     </state>
     <state x="520" y="287" width="673" height="472" key="find.popup/0.23.1680.1027@0.23.1680.1027" timestamp="1584769859362" />
-    <state x="522" y="244" width="670" height="676" key="search.everywhere.popup" timestamp="1584769818508">
+    <state x="522" y="244" width="670" height="676" key="search.everywhere.popup" timestamp="1584771677998">
       <screen x="0" y="23" width="1680" height="1027" />
     </state>
-    <state x="522" y="244" width="670" height="676" key="search.everywhere.popup/0.23.1680.1027@0.23.1680.1027" timestamp="1584769818508" />
+    <state x="522" y="244" width="670" height="676" key="search.everywhere.popup/0.23.1680.1027@0.23.1680.1027" timestamp="1584771677998" />
   </component>
 </project>
