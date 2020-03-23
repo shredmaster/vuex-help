@@ -1,26 +1,54 @@
-import { find, deepCopy, forEachValue, isObject, isPromise, assert, recursiveDecorator } from '../../src/util'
+import {
+  find, deepCopy, forEachValue, isObject, isPromise,
+  assert,
+  HelpFactory,
+  walkObject
+} from '../../src/util'
 
 describe('util', () => {
-  it('recursiveDecorator', () => {
+  it('walkObject', () => {
     const module = {
       cart: {
-        state: { item: [] },
+        state: { item: [], customer: { address: {}}},
         actions: {
           create () {
           }
         },
         mutations: {
-          state () {
+          item () {
           }
+        }
+      },
+      user: {
+        actions: {
+          login () {},
+          logout () {}
+        },
+        getters: {
+          firstName () {}
         }
       }
     }
-    const store = recursiveDecorator(module, (func) => {
-      console.log(func)
-      return func
-    })
-    console.log(store)
+    const component = {
+      $store: {
+        dispatch: jasmine.createSpy('action'),
+        commit: jasmine.createSpy('commit'),
+        getters: {
+          'user/firstName': jasmine.createSpy('commit')
+        }
+      }
+    }
+    const store = walkObject(module, new HelpFactory(component))
+    store.cart.actions.create()
+    store.cart.mutations.item()
+    store.user.getters.firstName()
+    expect(component.$store.dispatch).toHaveBeenCalled()
+    expect(component.$store.dispatch).toHaveBeenCalledWith('cart/create')
+    expect(component.$store.commit).toHaveBeenCalled()
+    expect(component.$store.commit).toHaveBeenCalledWith('cart/item')
+    expect(component.$store.getters['user/firstName']).toHaveBeenCalled()
   })
+
   it('find', () => {
     const list = [33, 22, 112, 222, 43]
     expect(find(list, function (a) { return a % 2 === 0 })).toEqual(22)

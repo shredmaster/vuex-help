@@ -1,33 +1,50 @@
-export function recursiveDecorator (obj, adapter) {
-  return Object.keys(obj).reduce((acc, key) => {
-    const objProp = obj[key]
-    switch (typeof objProp) {
-      case 'object':
-        return { ...acc, [key]: recursiveDecorator(objProp, adapter) }
-
-      case 'function':
-        return { ...acc, [key]: adapter(objProp) }
+export function walkObject (obj, factory, path = []) {
+  const val = Object.keys(obj).reduce((acc, key) => {
+    const propVal = obj[key]
+    path.push(key)
+    if (isObject(propVal)) {
+      return { ...acc, [key]: walkObject(propVal, factory, path) }
     }
-    return { ...acc, [key]: objProp }
+    const value = factory.create(path, propVal)
+    path.pop()
+    return { ...acc, [key]: value }
   }, {})
+  const result = factory.create(path, val)
+  path.pop()
+  return result
 }
 
-export const adapter = (component) => {
-  return {
-    keys: [],
-    push: (key) => {
-      console.log(this.key, this.keys)
-      this.keys.push(key)
-      console.log(this.keys)
-    },
-    pop: () => {
-      this.keys.pop()
-    },
-    adapt: (fn) => {
-      console.log(this.keys)
-      console.log(fn)
-      return fn
+export class HelpFactory {
+  constructor (component) {
+    this.component = component
+  }
+
+  create (path, val) {
+    const [module, type, name] = path
+    if (type === 'state') return val
+    const eventName = `${module}/${name}`
+    if (module && name) {
+      assert(isFunction(val), 'value must be an function')
+      switch (type) {
+        case 'mutations':
+          return function (...arg) {
+            this.$store.commit(eventName, ...arg)
+          }.bind(this.component)
+        case 'actions' :
+          return function (...arg) {
+            this.$store.dispatch(eventName, ...arg)
+          }.bind(this.component)
+        case 'getters' :
+          return function (...arg) {
+            this.$store.getters[eventName](...arg)
+          }.bind(this.component)
+      }
     }
+    return val
+  }
+
+  space (depth) {
+    return Array(depth).fill('--').join('')
   }
 }
 
@@ -88,6 +105,10 @@ export function forEachValue (obj, fn) {
 
 export function isObject (obj) {
   return obj !== null && typeof obj === 'object'
+}
+
+export function isFunction (functionToCheck) {
+  return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]'
 }
 
 export function isPromise (val) {
