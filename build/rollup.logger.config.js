@@ -5,7 +5,9 @@ module.exports = {
   output: {
     file: 'dist/logger.js',
     format: 'umd',
-    name: 'createVuexLogger',
+    name: 'createVuexLogger'
   },
-  plugins: [buble()]
+  plugins: [buble({
+    objectAssign: 'Object.assign'
+  })]
 }

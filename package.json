@@ -1,35 +1,31 @@
 {
   "name": "@golml/vuex-help",
-  "version": "0.0.1",
-  "description": "state management for Vue.js",
+  "version": "0.1.0",
+  "description": "a helper library to be for vuex",
   "main": "dist/vuex-help.common.js",
   "module": "dist/vuex-help.esm.js",
   "unpkg": "dist/vuex-help.js",
   "jsdelivr": "dist/vuex-help.js",
   "typings": "types/index.d.ts",
   "files": [
-    "dist",
-    "types/index.d.ts",
-    "types/helpers.d.ts",
-    "types/vue.d.ts"
+    "dist"
   ],
   "scripts": {
     "dev": "node examples/server.js",
     "dev:dist": "rollup -wm -c build/rollup.dev.config.js",
-    "build": "npm run build:main && npm run build:logger",
+    "build": "npm run build:main",
     "build:main": "node build/build.main.js",
     "build:logger": "rollup -c build/rollup.logger.config.js",
     "lint": "eslint src test",
-    "test": "npm run lint && npm run test:types && npm run test:unit && npm run test:ssr && npm run test:e2e",
+    "test": "npm run lint && npm run test:unit && npm run test:ssr && npm run test:e2e",
     "test:unit": "rollup -c build/rollup.dev.config.js && jasmine JASMINE_CONFIG_PATH=test/unit/jasmine.json",
     "test:e2e": "node test/e2e/runner.js",
-    "test:ssr": "rollup -c build/rollup.dev.config.js && cross-env VUE_ENV=server jasmine JASMINE_CONFIG_PATH=test/unit/jasmine.json",
-    "test:types": "tsc -p types/test",
+    "test:ssr": "rollup -c build/rollup.dev.config.js && cross-env VUE_ENV=server jasmine JASMINE_CONFIG_PATH=test/unit/jasmine.json"
     "release": "bash build/release.sh"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vuejs/vuex.git"
+    "url": "git+https://github.com/shredmaster/vuex-help.git"
   },
   "author": "Steven Lin <lin.golml@gmail.com>",
   "license": "MIT",

@@ -2,7 +2,6 @@
 
 a helper utility library `to be` for [Vuex](http://vuex.vuejs.org/).
 
-
 <hr />
 
 ## Requirements
@@ -27,6 +26,8 @@ or
     }
   }
 ```
+
+same notation apply to mutations and getters
 
 ## Install
 
