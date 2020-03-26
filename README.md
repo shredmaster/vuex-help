@@ -11,7 +11,7 @@ a helper utility library `to be` for [Vuex](http://vuex.vuejs.org/).
 - Vue.use(Vuex) is installed
 
 ## Usage
-Access to state, getters and actions without rely on string constants.
+Alternative helpers to access getters, mutations and actions without rely on string constants.
 
 ```html
 <button @click="$h.cart.actions.addProductToCart(product)">
@@ -32,7 +32,7 @@ same notation apply to mutations and getters
 ## Install
 
 ```bash
-npm install --save @lml/vuex-help
+npm install --save @golml/vuex-help
 ```
 
 ```js
