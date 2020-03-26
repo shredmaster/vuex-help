@@ -1,5 +1,5 @@
 /**
- * vuex v0.1.1
+ * vuex v0.1.2
  * (c) 2020 Steven Lin
  * @license MIT
  */
@@ -142,7 +142,7 @@
 
   var index = {
     install: install,
-    version: '0.1.1'
+    version: '0.1.2'
   };
 
   return index;
