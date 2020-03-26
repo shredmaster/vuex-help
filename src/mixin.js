@@ -1,11 +1,12 @@
-const vuexHelpMixin = function (modules) {
+import { mapStore } from './util'
+const vuexHelpMixin = function ({ modules }) {
   return {
     beforeCreate () {
       const options = this.$options
       if (!options.computed) options.computed = {}
       if (options.computed.$h) return
       options.computed.$h = function () {
-        return { crap: 'ok' }
+        return mapStore(modules, this.$store)
       }
     }
   }

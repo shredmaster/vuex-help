@@ -7,7 +7,7 @@
       <br>
       <button
         :disabled="!product.inventory"
-        @click="addProductToCart(product)">
+        @click="$h.cart.actions.addProductToCart(product)">
         Add to cart
       </button>
     </li>
@@ -15,17 +15,14 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   computed: mapState({
     products: state => state.products.all
   }),
-  methods: mapActions('cart', [
-    'addProductToCart'
-  ]),
   created () {
-    this.$store.dispatch('products/getAllProducts')
+    this.$h.products.actions.getAllProducts()
   }
 }
 </script>

@@ -1,12 +1,11 @@
 import {
   find, deepCopy, forEachValue, isObject, isPromise,
   assert,
-  HelpFactory,
-  walkObject
+  mapStore
 } from '../../src/util'
 
 describe('util', () => {
-  it('walkObject', () => {
+  it('mapStore', () => {
     const module = {
       cart: {
         state: { item: [], customer: { address: {}}},
@@ -17,9 +16,13 @@ describe('util', () => {
         mutations: {
           item () {
           }
+        },
+        getters: {
+          firstName () {}
         }
       },
       user: {
+        state: () => ({ name: 'lin' }),
         actions: {
           login () {},
           logout () {}
@@ -29,24 +32,24 @@ describe('util', () => {
         }
       }
     }
-    const component = {
-      $store: {
-        dispatch: jasmine.createSpy('action'),
-        commit: jasmine.createSpy('commit'),
-        getters: {
-          'user/firstName': jasmine.createSpy('commit')
-        }
+    const $store = {
+      dispatch: jasmine.createSpy('action'),
+      commit: jasmine.createSpy('commit'),
+      getters: {
+        'user/firstName': jasmine.createSpy('commit')
       }
     }
-    const store = walkObject(module, new HelpFactory(component))
+
+    const store = mapStore(module, $store)
     store.cart.actions.create()
     store.cart.mutations.item()
     store.user.getters.firstName()
-    expect(component.$store.dispatch).toHaveBeenCalled()
-    expect(component.$store.dispatch).toHaveBeenCalledWith('cart/create')
-    expect(component.$store.commit).toHaveBeenCalled()
-    expect(component.$store.commit).toHaveBeenCalledWith('cart/item')
-    expect(component.$store.getters['user/firstName']).toHaveBeenCalled()
+    expect(store.user.state.name).toEqual('lin')
+    expect($store.dispatch).toHaveBeenCalled()
+    expect($store.dispatch).toHaveBeenCalledWith('cart/create')
+    expect($store.commit).toHaveBeenCalled()
+    expect($store.commit).toHaveBeenCalledWith('cart/item')
+    expect($store.getters['user/firstName']).toHaveBeenCalled()
   })
 
   it('find', () => {

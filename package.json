@@ -1,5 +1,5 @@
 {
-  "name": "vuex-help",
+  "name": "@lml/vuex-help",
   "version": "0.0.1",
   "description": "state management for Vue.js",
   "main": "dist/vuex-help.common.js",
@@ -25,15 +25,13 @@
     "test:e2e": "node test/e2e/runner.js",
     "test:ssr": "rollup -c build/rollup.dev.config.js && cross-env VUE_ENV=server jasmine JASMINE_CONFIG_PATH=test/unit/jasmine.json",
     "test:types": "tsc -p types/test",
-    "release": "bash build/release.sh",
-    "docs": "vuepress dev docs",
-    "docs:build": "vuepress build docs"
+    "release": "bash build/release.sh"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vuejs/vuex.git"
   },
-  "author": "Evan You",
+  "author": "Steven Lin <lin.golml@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/vuejs/vuex/issues"

@@ -1,3 +1,7 @@
+export function mapStore (modules, store) {
+  return walkObject(modules, new ModuleFactory(store))
+}
+
 export function walkObject (obj, factory, path = []) {
   const val = Object.keys(obj).reduce((acc, key) => {
     const propVal = obj[key]
@@ -14,37 +18,42 @@ export function walkObject (obj, factory, path = []) {
   return result
 }
 
-export class HelpFactory {
-  constructor (component) {
-    this.component = component
+export class ModuleFactory {
+  constructor (store) {
+    this.context = store
   }
 
   create (path, val) {
     const [module, type, name] = path
-    if (type === 'state') return val
+    if (type === 'state') {
+      if (isFunction(val)) {
+        return val()
+      }
+      return val
+    }
     const eventName = `${module}/${name}`
     if (module && name) {
       assert(isFunction(val), 'value must be an function')
       switch (type) {
         case 'mutations':
-          return function (...arg) {
-            this.$store.commit(eventName, ...arg)
-          }.bind(this.component)
+          return this.applyFun(function (...arg) {
+            this.commit(eventName, ...arg)
+          })
         case 'actions' :
-          return function (...arg) {
-            this.$store.dispatch(eventName, ...arg)
-          }.bind(this.component)
+          return this.applyFun(function (...arg) {
+            this.dispatch(eventName, ...arg)
+          })
         case 'getters' :
-          return function (...arg) {
-            this.$store.getters[eventName](...arg)
-          }.bind(this.component)
+          return this.applyFun(function (...arg) {
+            this.getters[eventName](...arg)
+          })
       }
     }
     return val
   }
 
-  space (depth) {
-    return Array(depth).fill('--').join('')
+  applyFun (func) {
+    return (...args) => func.apply(this.context, args)
   }
 }
 

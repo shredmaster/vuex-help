@@ -30,7 +30,7 @@ export default {
   },
   methods: {
     checkout (products) {
-      this.$store.dispatch('cart/checkout', products)
+      this.$h.cart.actions.checkout(products)
     }
   }
 }
