@@ -9,6 +9,7 @@ a helper utility library `to be` for [Vuex](http://vuex.vuejs.org/).
 - [Vue.js](https://vuejs.org) (v2.0.0+)
 - [Vuex](http://vuex.vuejs.org) (v2.0.0+)
 - Vue.use(Vuex) is installed
+- All Vuex state, getters and actions are organized into [Vuex modules](https://vuex.vuejs.org/en/modules.html).
 
 ## Usage
 Alternative helpers to access getters, mutations and actions without rely on string constants.
