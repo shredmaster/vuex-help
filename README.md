@@ -1,29 +1,62 @@
-# Vuex [![Build Status](https://circleci.com/gh/vuejs/vuex/tree/dev.png?style=shield)](https://circleci.com/gh/vuejs/vuex)
+# vuex-help
 
-> Centralized State Management for Vue.js.
+a helper utility library `to be` for [Vuex](http://vuex.vuejs.org/).
 
-<p align="center">
-  <img width="700px" src="https://raw.githubusercontent.com/vuejs/vuex/dev/docs/.vuepress/public/vuex.png">
-</p>
+<hr />
 
-- [What is Vuex?](https://vuex.vuejs.org/)
-- [Full Documentation](http://vuex.vuejs.org/)
+## Requirements
 
-## Examples
+- [Vue.js](https://vuejs.org) (v2.0.0+)
+- [Vuex](http://vuex.vuejs.org) (v2.0.0+)
+- Vue.use(Vuex) is installed
 
-- [Counter](https://github.com/vuejs/vuex/tree/dev/examples/counter)
-- [Counter with Hot Reload](https://github.com/vuejs/vuex/tree/dev/examples/counter-hot)
-- [TodoMVC](https://github.com/vuejs/vuex/tree/dev/examples/todomvc)
-- [Flux Chat](https://github.com/vuejs/vuex/tree/dev/examples/chat)
-- [Shopping Cart](https://github.com/vuejs/vuex/tree/dev/examples/shopping-cart)
+## Usage
+Access to state, getters and actions without rely on string constants.
 
-Running the examples:
-
-``` bash
-$ npm install
-$ npm run dev # serve examples at localhost:8080
+```html
+<button @click="$h.cart.actions.addProductToCart(product)">
+    Add to cart
+</button>
 ```
+or 
+```js
+  methods: {
+    addProductToCart (product) {
+      this.$h.cart.actions.addProductToCart(product)
+    }
+  }
+```
+
+same notation apply to mutations and getters
+
+## Install
+
+```bash
+npm install --save @lml/vuex-help
+```
+
+```js
+// example/shopping-cart/store/index.js
+export const modules = {
+  cart,
+  products
+}
+```
+
+```js
+// example/shopping-cart/app.js
+import Vue from 'vue'
+import VuexHelp from 'vuex-help'
+import { modules } from './store'
+Vue.use(VuexHelp, { modules })
+```
+
+Check out full example on [shopping-cart](https://github.com/shredmaster/vuex-help/tree/master/examples/shopping-cart).
+
+
+## Roadmap
+open to feature requests.
 
 ## License
 
-[MIT](http://opensource.org/licenses/MIT)
+The MIT License (MIT). Please see [License File](LICENSE) for more information.

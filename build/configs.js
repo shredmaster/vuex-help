@@ -5,7 +5,7 @@ const version = process.env.VERSION || require('../package.json').version
 const banner =
 `/**
  * vuex v${version}
- * (c) ${new Date().getFullYear()} Evan You
+ * (c) ${new Date().getFullYear()} Steven Lin
  * @license MIT
  */`
 
