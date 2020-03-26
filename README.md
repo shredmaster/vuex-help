@@ -28,7 +28,7 @@ or
   }
 ```
 
-same notation apply to mutations and getters
+same notation applies to mutations and getters
 
 ## Install
 
