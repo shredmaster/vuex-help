@@ -25,15 +25,11 @@ export class ModuleFactory {
 
   create (path, val) {
     const [module, type, name] = path
-    if (type === 'state') {
-      if (isFunction(val)) {
-        return val()
-      }
-      return val
+    if (path.length === 2 && type === 'state') {
+      return this.context.state[module]
     }
     const eventName = `${module}/${name}`
-    if (module && name) {
-      assert(isFunction(val), 'value must be an function')
+    if (module && name && path.length === 3) {
       switch (type) {
         case 'mutations':
           return this.applyFun(function (...arg) {
@@ -44,9 +40,7 @@ export class ModuleFactory {
             this.dispatch(eventName, ...arg)
           })
         case 'getters' :
-          return this.applyFun(function (...arg) {
-            this.getters[eventName](...arg)
-          })
+          return this.context.getters[eventName]
       }
     }
     return val

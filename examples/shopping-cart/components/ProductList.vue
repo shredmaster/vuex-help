@@ -1,7 +1,7 @@
 <template>
   <ul>
     <li
-      v-for="product in products"
+      v-for="product in allProducts"
       :key="product.id">
       {{ product.title }} - {{ product.price | currency }}
       <br>
@@ -15,12 +15,13 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 
 export default {
-  computed: mapState({
-    products: state => state.products.all
-  }),
+  computed: {
+    allProducts () {
+      return this.$h.products.state.all
+    }
+  },
   created () {
     this.$h.products.actions.getAllProducts()
   }

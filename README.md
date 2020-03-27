@@ -12,23 +12,47 @@ a helper utility library `to be` for [Vuex](http://vuex.vuejs.org/).
 - All Vuex state, getters and actions are organized into [Vuex modules](https://vuex.vuejs.org/en/modules.html).
 
 ## Usage
-Alternative helpers to access getters, mutations and actions without rely on string constants.
+Alternative helpers to access getters, mutations, state and actions without relying on string constants.
 
 ```html
-<button @click="$h.cart.actions.addProductToCart(product)">
-    Add to cart
-</button>
-```
-or 
-```js
-  methods: {
-    addProductToCart (product) {
-      this.$h.cart.actions.addProductToCart(product)
-    }
-  }
+<template>
+  <div class="cart">
+    <h2>Your Cart</h2>
+    <p v-show="!cart.products.length"><i>Please add some products to cart.</i></p>
+    <ul>
+      <li
+        v-for="product in cart.products"
+        :key="product.id">
+        {{ product.title }} - {{ product.price | currency }} x {{ product.quantity }}
+      </li>
+    </ul>
+    <p>Total: {{ cart.total | currency }}</p>
+    <p><button :disabled="!cart.products.length" @click="checkout(cart.products)">Checkout</button></p>
+    <p v-show="cart.checkoutStatus">Checkout {{ cart.checkoutStatus }}.</p>
+  </div>
+</template>
 ```
 
-same notation applies to mutations and getters
+```js
+export default {
+  computed: {
+    cart () {
+      const { cartProducts: products, cartTotalPrice: total } = this.$h.cart.getters
+      const { checkoutStatus } = this.$h.cart.state
+      return {
+        products,
+        total,
+        checkoutStatus
+      }
+    }
+  },
+  methods: {
+    checkout (products) {
+      this.$h.cart.actions.checkout(products)
+    }
+  }
+}
+```
 
 ## Install
 

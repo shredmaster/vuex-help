@@ -1,5 +1,5 @@
 /**
- * vuex v0.1.4
+ * vuex v0.1.5
  * (c) 2020 Steven Lin
  * @license MIT
  */
@@ -30,15 +30,11 @@ class ModuleFactory {
 
   create (path, val) {
     const [module, type, name] = path;
-    if (type === 'state') {
-      if (isFunction(val)) {
-        return val()
-      }
-      return val
+    if (path.length === 2 && type === 'state') {
+      return this.context.state[module]
     }
     const eventName = `${module}/${name}`;
-    if (module && name) {
-      assert(isFunction(val), 'value must be an function');
+    if (module && name && path.length === 3) {
       switch (type) {
         case 'mutations':
           return this.applyFun(function (...arg) {
@@ -49,9 +45,7 @@ class ModuleFactory {
             this.dispatch(eventName, ...arg);
           })
         case 'getters' :
-          return this.applyFun(function (...arg) {
-            this.getters[eventName](...arg);
-          })
+          return this.context.getters[eventName]
       }
     }
     return val
@@ -64,14 +58,6 @@ class ModuleFactory {
 
 function isObject (obj) {
   return obj !== null && typeof obj === 'object'
-}
-
-function isFunction (functionToCheck) {
-  return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]'
-}
-
-function assert (condition, msg) {
-  if (!condition) throw new Error(`[vuex-help] ${msg}`)
 }
 
 const vuexHelpMixin = function ({ modules }) {
@@ -111,7 +97,7 @@ function install (_Vue, options) {
 
 var index_esm = {
   install,
-  version: '0.1.4'
+  version: '0.1.5'
 };
 
 export default index_esm;

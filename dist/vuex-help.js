@@ -1,5 +1,5 @@
 /**
- * vuex v0.1.4
+ * vuex v0.1.5
  * (c) 2020 Steven Lin
  * @license MIT
  */
@@ -41,15 +41,11 @@
     var module = path[0];
       var type = path[1];
       var name = path[2];
-    if (type === 'state') {
-      if (isFunction(val)) {
-        return val()
-      }
-      return val
+    if (path.length === 2 && type === 'state') {
+      return this.context.state[module]
     }
     var eventName = module + "/" + name;
-    if (module && name) {
-      assert(isFunction(val), 'value must be an function');
+    if (module && name && path.length === 3) {
       switch (type) {
         case 'mutations':
           return this.applyFun(function () {
@@ -68,13 +64,7 @@
             (ref = this).dispatch.apply(ref, [ eventName ].concat( arg ));
           })
         case 'getters' :
-          return this.applyFun(function () {
-              var ref;
-
-              var arg = [], len = arguments.length;
-              while ( len-- ) arg[ len ] = arguments[ len ];
-            (ref = this.getters)[eventName].apply(ref, arg);
-          })
+          return this.context.getters[eventName]
       }
     }
     return val
@@ -93,14 +83,6 @@
 
   function isObject (obj) {
     return obj !== null && typeof obj === 'object'
-  }
-
-  function isFunction (functionToCheck) {
-    return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]'
-  }
-
-  function assert (condition, msg) {
-    if (!condition) { throw new Error(("[vuex-help] " + msg)) }
   }
 
   var vuexHelpMixin = function (ref) {
@@ -142,7 +124,7 @@
 
   var index = {
     install: install,
-    version: '0.1.4'
+    version: '0.1.5'
   };
 
   return index;

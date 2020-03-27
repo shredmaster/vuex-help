@@ -8,6 +8,7 @@ describe('util', () => {
   it('mapStore', () => {
     const module = {
       cart: {
+        namespaced: true,
         state: { item: [], customer: { address: {}}},
         actions: {
           create () {
@@ -16,12 +17,10 @@ describe('util', () => {
         mutations: {
           item () {
           }
-        },
-        getters: {
-          firstName () {}
         }
       },
       user: {
+        namespaced: true,
         state: () => ({ name: 'lin' }),
         actions: {
           login () {},
@@ -33,23 +32,29 @@ describe('util', () => {
       }
     }
     const $store = {
+      state: {
+        cart: { storeState: [] },
+        user: { storeState: [] }
+      },
       dispatch: jasmine.createSpy('action'),
       commit: jasmine.createSpy('commit'),
       getters: {
         'user/firstName': jasmine.createSpy('commit')
       }
     }
-
     const store = mapStore(module, $store)
     store.cart.actions.create()
     store.cart.mutations.item()
     store.user.getters.firstName()
-    expect(store.user.state.name).toEqual('lin')
+    const cartState = store.cart.state
+    const userState = store.user.state
     expect($store.dispatch).toHaveBeenCalled()
     expect($store.dispatch).toHaveBeenCalledWith('cart/create')
     expect($store.commit).toHaveBeenCalled()
     expect($store.commit).toHaveBeenCalledWith('cart/item')
     expect($store.getters['user/firstName']).toHaveBeenCalled()
+    expect(cartState).toEqual({ storeState: [] })
+    expect(userState).toEqual({ storeState: [] })
   })
 
   it('find', () => {
