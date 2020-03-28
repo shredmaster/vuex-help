@@ -12,7 +12,7 @@ a plugin offers more natural and pleasant API for [Vuex](http://vuex.vuejs.org/)
 - All Vuex state, getters and actions are organized into [Vuex modules](https://vuex.vuejs.org/en/modules.html).
 
 ## Motivations
-Provide a more natural API to access getters, actions, mutation and state without using magic string or mapXXX helpers.
+Access getters, actions, mutations and state using the modules object directly.
 
 ## Usage
 minimal example how to access actions and mutations without using mapXX helpers and magic string
