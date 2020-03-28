@@ -1,6 +1,6 @@
 # vuex-help
 
-a helper utility library `to be` for [Vuex](http://vuex.vuejs.org/).
+a plugin offers more natural and pleasant API for [Vuex](http://vuex.vuejs.org/).
 
 <hr />
 
@@ -11,27 +11,11 @@ a helper utility library `to be` for [Vuex](http://vuex.vuejs.org/).
 - Vue.use(Vuex) is installed
 - All Vuex state, getters and actions are organized into [Vuex modules](https://vuex.vuejs.org/en/modules.html).
 
-## Usage
-Alternative helpers to access getters, mutations, state and actions without relying on string constants.
+## Motivations
+Provide a more natural API to access getters, actions, mutation and state without using magic string or mapXXX helpers.
 
-```html
-<template>
-  <div class="cart">
-    <h2>Your Cart</h2>
-    <p v-show="!cart.products.length"><i>Please add some products to cart.</i></p>
-    <ul>
-      <li
-        v-for="product in cart.products"
-        :key="product.id">
-        {{ product.title }} - {{ product.price | currency }} x {{ product.quantity }}
-      </li>
-    </ul>
-    <p>Total: {{ cart.total | currency }}</p>
-    <p><button :disabled="!cart.products.length" @click="checkout(cart.products)">Checkout</button></p>
-    <p v-show="cart.checkoutStatus">Checkout {{ cart.checkoutStatus }}.</p>
-  </div>
-</template>
-```
+## Usage
+minimal example how to access actions and mutations without using mapXX helpers and magic string
 
 ```js
 export default {
@@ -54,12 +38,30 @@ export default {
 }
 ```
 
+```html
+<div class="cart">
+    <h2>Your Cart</h2>
+    <p v-show="!cart.products.length"><i>Please add some products to cart.</i></p>
+    <ul>
+      <li
+        v-for="product in cart.products"
+        :key="product.id">
+        {{ product.title }} - {{ product.price | currency }} x {{ product.quantity }}
+      </li>
+    </ul>
+    <p>Total: {{ cart.total | currency }}</p>
+    <p><button :disabled="!cart.products.length" @click="checkout(cart.products)">Checkout</button></p>
+    <p v-show="cart.checkoutStatus">Checkout {{ cart.checkoutStatus }}.</p>
+  </div>
+```
+
 ## Install
 
 ```bash
 npm install --save @golml/vuex-help
 ```
 
+this plugin relying on modules to create the natural API. Therefore, you need to pass the modules as option.
 ```js
 // example/shopping-cart/store/index.js
 export const modules = {
