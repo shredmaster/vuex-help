@@ -1,5 +1,5 @@
 /**
- * vuex v0.1.5
+ * vuex v0.1.6
  * (c) 2020 Steven Lin
  * @license MIT
  */
@@ -118,7 +118,7 @@ function install (_Vue, options) {
 
 var index_esm = {
   install: install,
-  version: '0.1.5'
+  version: '0.1.6'
 };
 
 export default index_esm;

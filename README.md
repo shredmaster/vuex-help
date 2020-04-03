@@ -1,6 +1,6 @@
 # vuex-help
 
-a plugin offers more natural and pleasant API for [Vuex](http://vuex.vuejs.org/).
+a plugin offers more natural API for [Vuex](http://vuex.vuejs.org/).
 
 <hr />
 
@@ -12,7 +12,11 @@ a plugin offers more natural and pleasant API for [Vuex](http://vuex.vuejs.org/)
 - All Vuex state, getters and actions are organized into [Vuex modules](https://vuex.vuejs.org/en/modules.html).
 
 ## Motivations
-Access getters, actions, mutations and state using the modules object directly.
+Improve some of the difficulties of the existing api and mapXXX helpers.
+
+1. bad readability
+2. magic strings are hard to maintain and refactor
+3. can't navigate to the source in the IDE
 
 ## Usage
 minimal example how to access actions and mutations without using mapXX helpers and magic string
@@ -61,7 +65,7 @@ export default {
 npm install --save @golml/vuex-help
 ```
 
-this plugin relying on modules to create the natural API. Therefore, you need to pass the modules as option.
+this plugin relying on modules to create the natural API. Therefore, you need to export the modules and pass to plugin as an option property.
 ```js
 // example/shopping-cart/store/index.js
 export const modules = {
