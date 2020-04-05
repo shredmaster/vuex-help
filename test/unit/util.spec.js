@@ -42,7 +42,7 @@ describe('util', () => {
         'user/firstName': jasmine.createSpy('commit')
       }
     }
-    const store = mapStore(module, $store)
+    const store = mapStore($store, module)
     store.cart.actions.create()
     store.cart.mutations.item()
     store.user.getters.firstName()

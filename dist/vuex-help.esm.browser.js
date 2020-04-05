@@ -1,9 +1,10 @@
 /**
- * vuex v0.1.7
+ * vuex v0.1.8
  * (c) 2020 Steven Lin
  * @license MIT
  */
-function mapStore (modules, store) {
+function mapStore (store, modules) {
+  modules = modules || store._modules.root._rawModule.modules;
   return walkObject(modules, new ModuleFactory(store))
 }
 
@@ -67,8 +68,7 @@ const vuexHelpMixin = function ({ modules }) {
       if (!options.computed) options.computed = {};
       if (options.computed.$h) return
       options.computed.$h = function () {
-        modules = modules || this.$store._modules.root._rawModule.modules;
-        return mapStore(modules, this.$store)
+        return mapStore(this.$store, modules)
       };
     }
   }
@@ -99,7 +99,7 @@ function install (_Vue, options) {
 var index_esm = {
   install,
   mapStore,
-  version: '0.1.7'
+  version: '0.1.8'
 };
 
 export default index_esm;

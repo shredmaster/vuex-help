@@ -65,26 +65,31 @@ export default {
 npm install --save @golml/vuex-help
 ```
 
-this plugin relying on modules to create the natural API. Therefore, you need to export the modules and pass to plugin as an option property.
-```js
-// example/shopping-cart/store/index.js
-export const modules = {
-  cart,
-  products
-}
-```
-
 ```js
 // example/shopping-cart/app.js
 import Vue from 'vue'
 import VuexHelp from 'vuex-help'
-import { modules } from './store'
-Vue.use(VuexHelp, { modules })
+Vue.use(VuexHelp)
 ```
 
 Check out full example on [shopping-cart](https://github.com/shredmaster/vuex-help/tree/master/examples/shopping-cart).
 
-
+## Nuxt.js
+install vuex-help as [nuxtjs plugin](https://nuxtjs.org/guide/plugins/)
+```js
+// vuex-help.plugin.js
+export default function (ctx, inject) {
+  const { store } = ctx
+  const vuexHelp = mapStore(store)
+  inject('h', vuexHelp)
+}
+```
+```js
+// nuxt.config.js
+{
+  plugins: [{ src: '~/plugins/vuex-help.plugin.js'}]
+}
+```
 ## Roadmap
 open to feature requests.
 

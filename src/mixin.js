@@ -6,8 +6,7 @@ const vuexHelpMixin = function ({ modules }) {
       if (!options.computed) options.computed = {}
       if (options.computed.$h) return
       options.computed.$h = function () {
-        modules = modules || this.$store._modules.root._rawModule.modules
-        return mapStore(modules, this.$store)
+        return mapStore(this.$store, modules)
       }
     }
   }

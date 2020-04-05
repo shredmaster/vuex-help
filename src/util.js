@@ -1,4 +1,5 @@
-export function mapStore (modules, store) {
+export function mapStore (store, modules) {
+  modules = modules || store._modules.root._rawModule.modules
   return walkObject(modules, new ModuleFactory(store))
 }
 
