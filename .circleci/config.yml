@@ -1,7 +1,7 @@
 version: 2
 
 defaults: &defaults
-  working_directory: ~/vuex
+  working_directory: ~/vuex-help
   docker:
     - image: circleci/node:12-browsers
 

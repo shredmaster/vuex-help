@@ -1,5 +1,5 @@
 /**
- * vuex v0.1.8
+ * vuex v0.1.9
  * (c) 2020 Steven Lin
  * @license MIT
  */
@@ -8,12 +8,13 @@ function mapStore (store, modules) {
   return walkObject(modules, new ModuleFactory(store))
 }
 
-function walkObject (obj, factory, path = []) {
+function walkObject (obj, factory, path = [], nodes = {}) {
   const val = Object.keys(obj).reduce((acc, key) => {
     const propVal = obj[key];
     path.push(key);
-    if (isObject(propVal)) {
-      return { ...acc, [key]: walkObject(propVal, factory, path) }
+    if (isObject(propVal) && nodes[propVal] !== propVal) {
+      nodes[propVal] = propVal;
+      return { ...acc, [key]: walkObject(propVal, factory, path, nodes) }
     }
     const value = factory.create(path, propVal);
     path.pop();
@@ -99,7 +100,7 @@ function install (_Vue, options) {
 var index_esm = {
   install,
   mapStore,
-  version: '0.1.8'
+  version: '0.1.9'
 };
 
 export default index_esm;

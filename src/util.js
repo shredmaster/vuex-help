@@ -3,12 +3,13 @@ export function mapStore (store, modules) {
   return walkObject(modules, new ModuleFactory(store))
 }
 
-export function walkObject (obj, factory, path = []) {
+export function walkObject (obj, factory, path = [], nodes = {}) {
   const val = Object.keys(obj).reduce((acc, key) => {
     const propVal = obj[key]
     path.push(key)
-    if (isObject(propVal)) {
-      return { ...acc, [key]: walkObject(propVal, factory, path) }
+    if (isObject(propVal) && nodes[propVal] !== propVal) {
+      nodes[propVal] = propVal
+      return { ...acc, [key]: walkObject(propVal, factory, path, nodes) }
     }
     const value = factory.create(path, propVal)
     path.pop()
