@@ -1,5 +1,5 @@
 /**
- * vuex v0.1.6
+ * vuex v0.1.7
  * (c) 2020 Steven Lin
  * @license MIT
  */
@@ -88,6 +88,7 @@ var vuexHelpMixin = function (ref) {
       if (!options.computed) { options.computed = {}; }
       if (options.computed.$h) { return }
       options.computed.$h = function () {
+        modules = modules || this.$store._modules.root._rawModule.modules;
         return mapStore(modules, this.$store)
       };
     }
@@ -95,6 +96,8 @@ var vuexHelpMixin = function (ref) {
 };
 
 function applyMixin (Vue, options) {
+  if ( options === void 0 ) options = {};
+
   var version = Number(Vue.version.split('.')[0]);
   if (version > 2) {
     throw Error('version not supported')
@@ -118,8 +121,9 @@ function install (_Vue, options) {
 
 var index_esm = {
   install: install,
-  version: '0.1.6'
+  mapStore: mapStore,
+  version: '0.1.7'
 };
 
 export default index_esm;
-export { install };
+export { install, mapStore };

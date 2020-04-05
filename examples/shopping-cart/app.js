@@ -5,10 +5,9 @@ import store from './store'
 import { currency } from './currency'
 import Vuex from 'vuex'
 import VuexHelp from 'vuex-help'
-import { modules } from './store'
 
 Vue.filter('currency', currency)
-Vue.use(VuexHelp, { modules })
+Vue.use(VuexHelp)
 Vue.use(Vuex)
 new Vue({
   el: '#app',
