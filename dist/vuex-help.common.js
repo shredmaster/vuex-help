@@ -1,5 +1,5 @@
 /**
- * vuex v0.1.9
+ * vuex v0.2.0
  * (c) 2020 Steven Lin
  * @license MIT
  */
@@ -37,11 +37,16 @@ var ModuleFactory = function ModuleFactory (store) {
 };
 
 ModuleFactory.prototype.create = function create (path, val) {
+    var this$1 = this;
+
   var module = path[0];
     var type = path[1];
     var name = path[2];
-  if (path.length === 2 && type === 'state') {
-    return this.context.state[module]
+  if (path.length === 1) {
+    Object.defineProperty(val, 'state', {
+      get: function () { return this$1.context.state[module] }
+    });
+    return val
   }
   var eventName = module + "/" + name;
   if (module && name && path.length === 3) {
@@ -126,7 +131,7 @@ function install (_Vue, options) {
 var index = {
   install: install,
   mapStore: mapStore,
-  version: '0.1.9'
+  version: '0.2.0'
 };
 
 module.exports = index;

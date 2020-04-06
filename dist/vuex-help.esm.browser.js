@@ -1,5 +1,5 @@
 /**
- * vuex v0.1.9
+ * vuex v0.2.0
  * (c) 2020 Steven Lin
  * @license MIT
  */
@@ -32,8 +32,11 @@ class ModuleFactory {
 
   create (path, val) {
     const [module, type, name] = path;
-    if (path.length === 2 && type === 'state') {
-      return this.context.state[module]
+    if (path.length === 1) {
+      Object.defineProperty(val, 'state', {
+        get: () => { return this.context.state[module] }
+      });
+      return val
     }
     const eventName = `${module}/${name}`;
     if (module && name && path.length === 3) {
@@ -100,7 +103,7 @@ function install (_Vue, options) {
 var index_esm = {
   install,
   mapStore,
-  version: '0.1.9'
+  version: '0.2.0'
 };
 
 export default index_esm;

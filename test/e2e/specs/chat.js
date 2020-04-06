@@ -1,7 +1,7 @@
 module.exports = {
   'chat': function (browser) {
     browser
-      .url('http://localhost:8080/chat/')
+      .url('http://localhost:4000/chat/')
       .waitForElementVisible('.chatapp', 1000)
       .assert.containsText('.thread-count', 'Unread threads: 2')
       .assert.count('.thread-list-item', 3)
