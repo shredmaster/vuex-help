@@ -27,8 +27,11 @@ export class ModuleFactory {
 
   create (path, val) {
     const [module, type, name] = path
-    if (path.length === 2 && type === 'state') {
-      return this.context.state[module]
+    if (path.length === 1) {
+      Object.defineProperty(val, 'state', {
+        get: () => { return this.context.state[module] }
+      })
+      return val
     }
     const eventName = `${module}/${name}`
     if (module && name && path.length === 3) {
