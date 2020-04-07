@@ -1,6 +1,6 @@
 {
   "name": "@golml/vuex-help",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "a helper library to be for vuex",
   "main": "dist/vuex-help.common.js",
   "module": "dist/vuex-help.esm.js",
