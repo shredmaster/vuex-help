@@ -1,5 +1,5 @@
 /**
- * vuex v0.2.0
+ * vuex v0.2.1
  * (c) 2020 Steven Lin
  * @license MIT
  */
@@ -47,7 +47,7 @@ class ModuleFactory {
           })
         case 'actions' :
           return this.applyFun(function (...arg) {
-            this.dispatch(eventName, ...arg);
+            return this.dispatch(eventName, ...arg)
           })
         case 'getters' :
           return this.context.getters[eventName]
@@ -103,7 +103,7 @@ function install (_Vue, options) {
 var index_esm = {
   install,
   mapStore,
-  version: '0.2.0'
+  version: '0.2.1'
 };
 
 export default index_esm;

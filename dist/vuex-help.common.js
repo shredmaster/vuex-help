@@ -1,5 +1,5 @@
 /**
- * vuex v0.2.0
+ * vuex v0.2.1
  * (c) 2020 Steven Lin
  * @license MIT
  */
@@ -65,7 +65,7 @@ ModuleFactory.prototype.create = function create (path, val) {
 
             var arg = [], len = arguments.length;
             while ( len-- ) arg[ len ] = arguments[ len ];
-          (ref = this).dispatch.apply(ref, [ eventName ].concat( arg ));
+          return (ref = this).dispatch.apply(ref, [ eventName ].concat( arg ))
         })
       case 'getters' :
         return this.context.getters[eventName]
@@ -131,7 +131,7 @@ function install (_Vue, options) {
 var index = {
   install: install,
   mapStore: mapStore,
-  version: '0.2.0'
+  version: '0.2.1'
 };
 
 module.exports = index;

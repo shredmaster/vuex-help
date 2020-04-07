@@ -42,7 +42,7 @@ export class ModuleFactory {
           })
         case 'actions' :
           return this.applyFun(function (...arg) {
-            this.dispatch(eventName, ...arg)
+            return this.dispatch(eventName, ...arg)
           })
         case 'getters' :
           return this.context.getters[eventName]
