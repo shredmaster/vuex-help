@@ -1,5 +1,5 @@
 /**
- * vuex v0.2.1
+ * vuex v0.2.2
  * (c) 2020 Steven Lin
  * @license MIT
  */
@@ -37,7 +37,7 @@
   }
 
   var ModuleFactory = function ModuleFactory (store) {
-    this.context = store;
+    this.store = store;
   };
 
   ModuleFactory.prototype.create = function create (path, val) {
@@ -48,8 +48,23 @@
       var name = path[2];
     if (path.length === 1) {
       Object.defineProperty(val, 'state', {
-        get: function () { return this$1.context.state[module] }
+        get: function () {
+          return this$1.store.state[module]
+        }
       });
+      if (val.getters) {
+        var gettersKey = Object.keys(val.getters);
+        var getters = gettersKey.reduce(function (prev, key) {
+          var getterName = module + "/" + key;
+          prev[key] = this$1.store.getters[getterName];
+          return prev
+        }, {});
+        Object.defineProperty(val, 'getters', {
+          get: function get () {
+            return getters
+          }
+        });
+      }
       return val
     }
     var eventName = module + "/" + name;
@@ -71,8 +86,6 @@
               while ( len-- ) arg[ len ] = arguments[ len ];
             return (ref = this).dispatch.apply(ref, [ eventName ].concat( arg ))
           })
-        case 'getters' :
-          return this.context.getters[eventName]
       }
     }
     return val
@@ -85,7 +98,7 @@
         var args = [], len = arguments.length;
         while ( len-- ) args[ len ] = arguments[ len ];
 
-        return func.apply(this$1.context, args);
+        return func.apply(this$1.store, args);
       }
   };
 
@@ -102,7 +115,7 @@
         if (!options.computed) { options.computed = {}; }
         if (options.computed.$h) { return }
         options.computed.$h = function () {
-          return mapStore(this.$store, modules)
+          return mapStore(this.$store)
         };
       }
     }
@@ -135,7 +148,7 @@
   var index = {
     install: install,
     mapStore: mapStore,
-    version: '0.2.1'
+    version: '0.2.2'
   };
 
   return index;

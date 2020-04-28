@@ -1,5 +1,5 @@
 /**
- * vuex v0.2.1
+ * vuex v0.2.2
  * (c) 2020 Steven Lin
  * @license MIT
  */
@@ -27,15 +27,30 @@ function walkObject (obj, factory, path = [], nodes = {}) {
 
 class ModuleFactory {
   constructor (store) {
-    this.context = store;
+    this.store = store;
   }
 
   create (path, val) {
     const [module, type, name] = path;
     if (path.length === 1) {
       Object.defineProperty(val, 'state', {
-        get: () => { return this.context.state[module] }
+        get: () => {
+          return this.store.state[module]
+        }
       });
+      if (val.getters) {
+        const gettersKey = Object.keys(val.getters);
+        const getters = gettersKey.reduce((prev, key) => {
+          const getterName = `${module}/${key}`;
+          prev[key] = this.store.getters[getterName];
+          return prev
+        }, {});
+        Object.defineProperty(val, 'getters', {
+          get () {
+            return getters
+          }
+        });
+      }
       return val
     }
     const eventName = `${module}/${name}`;
@@ -49,15 +64,13 @@ class ModuleFactory {
           return this.applyFun(function (...arg) {
             return this.dispatch(eventName, ...arg)
           })
-        case 'getters' :
-          return this.context.getters[eventName]
       }
     }
     return val
   }
 
   applyFun (func) {
-    return (...args) => func.apply(this.context, args)
+    return (...args) => func.apply(this.store, args)
   }
 }
 
@@ -72,7 +85,7 @@ const vuexHelpMixin = function ({ modules }) {
       if (!options.computed) options.computed = {};
       if (options.computed.$h) return
       options.computed.$h = function () {
-        return mapStore(this.$store, modules)
+        return mapStore(this.$store)
       };
     }
   }
@@ -103,7 +116,7 @@ function install (_Vue, options) {
 var index_esm = {
   install,
   mapStore,
-  version: '0.2.1'
+  version: '0.2.2'
 };
 
 export default index_esm;

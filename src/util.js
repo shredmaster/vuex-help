@@ -22,15 +22,30 @@ export function walkObject (obj, factory, path = [], nodes = {}) {
 
 export class ModuleFactory {
   constructor (store) {
-    this.context = store
+    this.store = store
   }
 
   create (path, val) {
     const [module, type, name] = path
     if (path.length === 1) {
       Object.defineProperty(val, 'state', {
-        get: () => { return this.context.state[module] }
+        get: () => {
+          return this.store.state[module]
+        }
       })
+      if (val.getters) {
+        const gettersKey = Object.keys(val.getters)
+        const getters = gettersKey.reduce((prev, key) => {
+          const getterName = `${module}/${key}`
+          prev[key] = this.store.getters[getterName]
+          return prev
+        }, {})
+        Object.defineProperty(val, 'getters', {
+          get () {
+            return getters
+          }
+        })
+      }
       return val
     }
     const eventName = `${module}/${name}`
@@ -44,15 +59,13 @@ export class ModuleFactory {
           return this.applyFun(function (...arg) {
             return this.dispatch(eventName, ...arg)
           })
-        case 'getters' :
-          return this.context.getters[eventName]
       }
     }
     return val
   }
 
   applyFun (func) {
-    return (...args) => func.apply(this.context, args)
+    return (...args) => func.apply(this.store, args)
   }
 }
 
