@@ -1,5 +1,5 @@
 /**
- * vuex v0.2.2
+ * vuex v0.2.3
  * (c) 2020 Steven Lin
  * @license MIT
  */
@@ -42,7 +42,11 @@ class ModuleFactory {
         const gettersKey = Object.keys(val.getters);
         const getters = gettersKey.reduce((prev, key) => {
           const getterName = `${module}/${key}`;
-          prev[key] = this.store.getters[getterName];
+          Object.defineProperty(prev, key, {
+            get: function () {
+              return this.getters[getterName]
+            }.bind(this.store)
+          });
           return prev
         }, {});
         Object.defineProperty(val, 'getters', {
@@ -116,7 +120,7 @@ function install (_Vue, options) {
 var index_esm = {
   install,
   mapStore,
-  version: '0.2.2'
+  version: '0.2.3'
 };
 
 export default index_esm;

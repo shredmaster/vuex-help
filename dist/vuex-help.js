@@ -1,5 +1,5 @@
 /**
- * vuex v0.2.2
+ * vuex v0.2.3
  * (c) 2020 Steven Lin
  * @license MIT
  */
@@ -56,7 +56,11 @@
         var gettersKey = Object.keys(val.getters);
         var getters = gettersKey.reduce(function (prev, key) {
           var getterName = module + "/" + key;
-          prev[key] = this$1.store.getters[getterName];
+          Object.defineProperty(prev, key, {
+            get: function () {
+              return this.getters[getterName]
+            }.bind(this$1.store)
+          });
           return prev
         }, {});
         Object.defineProperty(val, 'getters', {
@@ -148,7 +152,7 @@
   var index = {
     install: install,
     mapStore: mapStore,
-    version: '0.2.2'
+    version: '0.2.3'
   };
 
   return index;
