@@ -1,11 +1,42 @@
 /**
- * vuex v0.2.3
+ * vuex v0.2.4
  * (c) 2020 Steven Lin
  * @license MIT
  */
-function mapStore (store, modules) {
-  modules = modules || store._modules.root._rawModule.modules;
-  return walkObject(modules, new ModuleFactory(store))
+function mapStore (store, { format = 'module', module }) {
+  const mappedStore = walkObject(module || store._modules.root._rawModule.modules, new ModuleFactory(store));
+  console.log(format);
+  if (format === 'vuex') {
+    return mapStoreToVuexFormat(mappedStore)
+  }
+  return mappedStore
+}
+
+const actionTypeMapping = {
+  getters: 'getters',
+  dispatch: 'actions',
+  commit: 'mutations',
+  state: 'state'
+};
+
+function mapStoreToVuexFormat (vuexStore) {
+  const keys = Object.keys(vuexStore);
+  return keys.reduce((store, key) => {
+    const module = vuexStore[key];
+    function addActions (module, name, store, type) {
+      const methodTypes = module[actionTypeMapping[type]] || {};
+      if (store[type]) {
+        store[type][name] = methodTypes;
+      } else {
+        store[type] = { [name]: methodTypes };
+      }
+    }
+    addActions(module, key, store, 'getters');
+    addActions(module, key, store, 'dispatch');
+    addActions(module, key, store, 'commit');
+    addActions(module, key, store, 'state');
+    return store
+  }, {})
 }
 
 function walkObject (obj, factory, path = [], nodes = {}) {
@@ -82,30 +113,37 @@ function isObject (obj) {
   return obj !== null && typeof obj === 'object'
 }
 
-const vuexHelpMixin = function ({ modules }) {
-  return {
-    beforeCreate () {
-      const options = this.$options;
-      if (!options.computed) options.computed = {};
-      if (options.computed.$h) return
-      options.computed.$h = function () {
-        return mapStore(this.$store)
-      };
-    }
-  }
-};
-
-function applyMixin (Vue, options = {}) {
-  const version = Number(Vue.version.split('.')[0]);
-  if (version > 2) {
-    throw Error('version not supported')
-  }
-  Vue.mixin(vuexHelpMixin(options));
+function assert (condition, msg) {
+  if (!condition) throw new Error(`[vuex-help] ${msg}`)
 }
 
-let Vue; // bind on install
+let Vue;
+function applyMixin (_Vue, options = {}) {
+  assert(Vue !== _Vue, 'already installed');
+
+  Vue = _Vue;
+
+  const descriptor = {
+    get () {
+      return this.$root.$_h
+    }
+  };
+  const { name = '$h' } = options;
+  Object.defineProperty(Vue.prototype, name, descriptor);
+
+  Vue.mixin(
+    {
+      beforeCreate () {
+        if (this.$root === this) {
+          this.$_h = mapStore(this.$store, options);
+        }
+      }
+    });
+}
+
+let Vue$1; // bind on install
 function install (_Vue, options) {
-  if (Vue && _Vue === Vue) {
+  if (Vue$1 && _Vue === Vue$1) {
     {
       console.error(
         '[vuex] already installed. Vue.use(Vuex) should be called only once.'
@@ -113,14 +151,14 @@ function install (_Vue, options) {
     }
     return
   }
-  Vue = _Vue;
-  applyMixin(Vue, options);
+  Vue$1 = _Vue;
+  applyMixin(Vue$1, options);
 }
 
 var index_esm = {
   install,
   mapStore,
-  version: '0.2.3'
+  version: '0.2.4'
 };
 
 export default index_esm;

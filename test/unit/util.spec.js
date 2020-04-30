@@ -1,7 +1,7 @@
 import {
   find, deepCopy, forEachValue, isObject, isPromise,
   assert,
-  mapStore
+  mapStore, mapStoreToVuexFormat
 } from '../../src/util'
 
 describe('util', () => {
@@ -42,12 +42,16 @@ describe('util', () => {
         'user/firstName': jasmine.createSpy('commit')
       }
     }
-    const store = mapStore($store, module)
-    store.cart.actions.create()
-    store.cart.mutations.item()
-    store.user.getters.firstName()
-    const cartState = store.cart.state
-    const userState = store.user.state
+    const store = mapStore($store, { module })
+
+    const vuexStore = mapStoreToVuexFormat(store)
+
+    console.log(vuexStore)
+    vuexStore.dispatch.cart.create()
+    vuexStore.commit.cart.item()
+    vuexStore.getters.user.firstName()
+    const cartState = vuexStore.state.cart
+    const userState = vuexStore.state.user
     expect($store.dispatch).toHaveBeenCalled()
     expect($store.dispatch).toHaveBeenCalledWith('cart/create')
     expect($store.commit).toHaveBeenCalled()

@@ -1,21 +1,25 @@
-import { mapStore } from './util'
-const vuexHelpMixin = function ({ modules }) {
-  return {
-    beforeCreate () {
-      const options = this.$options
-      if (!options.computed) options.computed = {}
-      if (options.computed.$h) return
-      options.computed.$h = function () {
-        return mapStore(this.$store)
-      }
+import { mapStore, assert } from './util'
+
+let Vue
+export default function (_Vue, options = {}) {
+  assert(Vue !== _Vue, 'already installed')
+
+  Vue = _Vue
+
+  const descriptor = {
+    get () {
+      return this.$root.$_h
     }
   }
-}
+  const { name = '$h' } = options
+  Object.defineProperty(Vue.prototype, name, descriptor)
 
-export default function (Vue, options = {}) {
-  const version = Number(Vue.version.split('.')[0])
-  if (version > 2) {
-    throw Error('version not supported')
-  }
-  Vue.mixin(vuexHelpMixin(options))
+  Vue.mixin(
+    {
+      beforeCreate () {
+        if (this.$root === this) {
+          this.$_h = mapStore(this.$store, options)
+        }
+      }
+    })
 }

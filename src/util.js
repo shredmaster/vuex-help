@@ -1,6 +1,37 @@
-export function mapStore (store, modules) {
-  modules = modules || store._modules.root._rawModule.modules
-  return walkObject(modules, new ModuleFactory(store))
+export function mapStore (store, { format = 'module', module }) {
+  const mappedStore = walkObject(module || store._modules.root._rawModule.modules, new ModuleFactory(store))
+  console.log(format)
+  if (format === 'vuex') {
+    return mapStoreToVuexFormat(mappedStore)
+  }
+  return mappedStore
+}
+
+const actionTypeMapping = {
+  getters: 'getters',
+  dispatch: 'actions',
+  commit: 'mutations',
+  state: 'state'
+}
+
+export function mapStoreToVuexFormat (vuexStore) {
+  const keys = Object.keys(vuexStore)
+  return keys.reduce((store, key) => {
+    const module = vuexStore[key]
+    function addActions (module, name, store, type) {
+      const methodTypes = module[actionTypeMapping[type]] || {}
+      if (store[type]) {
+        store[type][name] = methodTypes
+      } else {
+        store[type] = { [name]: methodTypes }
+      }
+    }
+    addActions(module, key, store, 'getters')
+    addActions(module, key, store, 'dispatch')
+    addActions(module, key, store, 'commit')
+    addActions(module, key, store, 'state')
+    return store
+  }, {})
 }
 
 export function walkObject (obj, factory, path = [], nodes = {}) {
