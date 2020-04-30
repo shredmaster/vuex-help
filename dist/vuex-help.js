@@ -1,5 +1,5 @@
 /**
- * vuex v0.2.4
+ * vuex v0.2.5
  * (c) 2020 Steven Lin
  * @license MIT
  */
@@ -10,11 +10,11 @@
 }(this, (function () { 'use strict';
 
   function mapStore (store, ref) {
-    var format = ref.format; if ( format === void 0 ) format = 'module';
+    var format = ref.format; if ( format === void 0 ) format = 'vuex';
     var module = ref.module;
 
+    assert(format === 'vuex' || format === 'module', 'invalid format');
     var mappedStore = walkObject(module || store._modules.root._rawModule.modules, new ModuleFactory(store));
-    console.log(format);
     if (format === 'vuex') {
       return mapStoreToVuexFormat(mappedStore)
     }
@@ -193,7 +193,7 @@
   var index = {
     install: install,
     mapStore: mapStore,
-    version: '0.2.4'
+    version: '0.2.5'
   };
 
   return index;

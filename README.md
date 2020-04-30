@@ -25,8 +25,8 @@ minimal example how to access actions and mutations without using mapXX helpers 
 export default {
   computed: {
     cart () {
-      const { cartProducts: products, cartTotalPrice: total } = this.$h.cart.getters
-      const { checkoutStatus } = this.$h.cart.state
+      const { cartProducts: products, cartTotalPrice: total } = this.$h.getters.cart
+      const { checkoutStatus } = this.$h.state.cart
       return {
         products,
         total,
@@ -36,11 +36,12 @@ export default {
   },
   methods: {
     checkout (products) {
-      this.$h.cart.actions.checkout(products)
+      this.$h.dispatch.cart.checkout(products)
     }
   }
 }
 ```
+note: v0.2.4 supports two different helper formats. see Api documentation for more detail.
 
 ```html
 <div class="cart">
@@ -72,12 +73,12 @@ import VuexHelp from 'vuex-help'
 Vue.use(VuexHelp)
 ```
 
-Check out full example on [shopping-cart](https://github.com/shredmaster/vuex-help/tree/master/examples/shopping-cart).
+Check out full example on [shopping-cart-vuex](https://github.com/shredmaster/vuex-help/tree/master/examples/shopping-cart-vuex).
 
 ## Nuxt.js
 install vuex-help as [nuxtjs plugin](https://nuxtjs.org/guide/plugins/)
 ```js
-// vuex-help.plugin.js
+// vuex-help.plugin.js 
 export default function (ctx, inject) {
   const { store } = ctx
   const vuexHelp = mapStore(store)
@@ -90,6 +91,22 @@ export default function (ctx, inject) {
   plugins: [{ src: '~/plugins/vuex-help.plugin.js'}]
 }
 ```
+
+
+## API
+
+### `Vue.use(VuexHelp, options)` (v0.2.4)
+
+Creates a new instance of the plugin with the given options. The following options
+can be provided to configure the plugin for your specific needs:
+
+
+- `name <String>`: The key for define property name on Vue.prototype. Defaults to `"$h"`.
+- `format <String>`: Specify `"vuex"` for helper object that follow vuex api format. ie. `$h.dispatch.products.getAllProducts()`.
+See full example on [shopping-cart-vuex](https://github.com/shredmaster/vuex-help/tree/master/examples/shopping-cart-vuex).
+ Specify `"module"` for helper object that follow module format. ie. $h.products.actions.getAllProducts(). See full example on [shopping-cart](https://github.com/shredmaster/vuex-help/tree/master/examples/shopping-cart).
+Defaults to `"vuex"`.
+
 ## Roadmap
 open to feature requests.
 

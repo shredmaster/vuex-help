@@ -1,11 +1,11 @@
 /**
- * vuex v0.2.4
+ * vuex v0.2.5
  * (c) 2020 Steven Lin
  * @license MIT
  */
-function mapStore (store, { format = 'module', module }) {
+function mapStore (store, { format = 'vuex', module }) {
+  assert(format === 'vuex' || format === 'module', 'invalid format');
   const mappedStore = walkObject(module || store._modules.root._rawModule.modules, new ModuleFactory(store));
-  console.log(format);
   if (format === 'vuex') {
     return mapStoreToVuexFormat(mappedStore)
   }
@@ -158,7 +158,7 @@ function install (_Vue, options) {
 var index_esm = {
   install,
   mapStore,
-  version: '0.2.4'
+  version: '0.2.5'
 };
 
 export default index_esm;

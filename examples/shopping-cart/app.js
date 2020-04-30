@@ -8,7 +8,7 @@ import VuexHelp from 'vuex-help'
 
 Vue.filter('currency', currency)
 Vue.use(Vuex)
-Vue.use(VuexHelp)
+Vue.use(VuexHelp, { format: 'module' })
 
 new Vue({
   el: '#app',
